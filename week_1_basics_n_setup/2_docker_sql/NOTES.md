@@ -1,6 +1,6 @@
 # Week 1 notes
 
-## Parse datetime strings as `pd.datetime` with `pd.read_csv()`
+## Parse datetime strings as `pd.datetime` directly in `pd.read_csv()`
 
 Instead of changing columns to `pd.datetime` after calling `pd.read_csv()`, we can do it directly in the function call by passing a `parse_dates` argument:
 
