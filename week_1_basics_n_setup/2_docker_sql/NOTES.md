@@ -9,6 +9,23 @@ rides = pd.read_csv(
     Path('green_tripdata_2019-01.csv'), 
     parse_dates=['lpep_pickup_datetime', 'lpep_dropoff_datetime']
 )
+
+print(rides.info())
+```
+
+```
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 630918 entries, 0 to 630917
+Data columns (total 20 columns):
+ #   Column                 Non-Null Count   Dtype         
+---  ------                 --------------   -----         
+ 0   VendorID               630918 non-null  int64         
+ 1   lpep_pickup_datetime   630918 non-null  datetime64[ns]
+ 2   lpep_dropoff_datetime  630918 non-null  datetime64[ns]
+
+(...)
+
+dtypes: datetime64[ns](2), float64(10), int64(7), object(1)
 ```
 
 ## Ingest a Pandas dataframe in chunks to a SQL database without iterators
