@@ -13,7 +13,7 @@ rides = pd.read_csv(
 
 ## Ingest a Pandas dataframe in chunks to a SQL database without iterators
 
-If your goal is to partition the ingestion of data in a SQL database and not partition the reading of the `.csv` file, you can do it directly in the `pd.DataFrame.to_sql()` function, e.g.:
+If your goal is to partition the ingestion of data in a SQL database (and not the reading of the `.csv` file into memory), you can do it directly in the `pd.DataFrame.to_sql()` function, e.g.:
 
 ```python
 import pandas as pd
