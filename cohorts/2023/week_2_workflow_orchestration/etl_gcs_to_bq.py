@@ -70,7 +70,7 @@ def etl_gcs_to_bq_parent(year: int, months: list[int], color : str):
 
 
 if __name__ == "__main__":
-    etl_parent(
+    etl_gcs_to_bq_parent(
         2019, 
         [2, 3], # Feb and March
         "yellow"
