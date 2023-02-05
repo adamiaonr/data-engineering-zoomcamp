@@ -1,0 +1,66 @@
+###
+### A complete description of a Prefect Deployment for flow 'etl-web-to-gcs-parent'
+###
+name: flow with github storage
+description: null
+version: 6ef1f81c6309b6ecae28b76562915dc7
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-web-to-gcs-parent
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  _block_document_id: 7e17b153-199e-4632-a318-6fe59b3c7329
+  _block_document_name: anonymous-11f4316f-73c1-4ef1-9318-2b4a3225feed
+  _is_anonymous: true
+  block_type_slug: process
+  _block_type_slug: process
+storage:
+  repository: https://github.com/adamiaonr/data-engineering-zoomcamp.git
+  reference: main
+  access_token: '**********'
+  _block_document_id: fc2a9f11-1751-4ab9-a29e-ce5daaa9854b
+  _block_document_name: zoom-github
+  _is_anonymous: false
+  block_type_slug: github
+  _block_type_slug: github
+path: cohorts/2023/week_2_workflow_orchestration/
+entrypoint: cohorts/2023/week_2_workflow_orchestration/etl_web_to_gcs.py:etl_web_to_gcs_parent
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    year:
+      title: year
+      default: 2020
+      position: 0
+      type: integer
+    months:
+      title: months
+      default:
+      - 1
+      position: 1
+      type: array
+      items:
+        type: integer
+    color:
+      title: color
+      default: green
+      position: 2
+      type: string
+  required: null
+  definitions: null
