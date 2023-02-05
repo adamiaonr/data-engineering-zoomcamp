@@ -89,6 +89,7 @@ def etl_web_to_gcs_parent(
     months: list[int] = [1],
     color: str = "green"
 ) -> None:
+    """Main ETL flow (web to GCS)"""
     for month in months:
         etl_web_to_gcs(year, month, color)
 

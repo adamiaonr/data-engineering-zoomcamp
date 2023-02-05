@@ -61,7 +61,7 @@ def etl_gcs_to_bq(year: int, month: int, color: str) -> int:
 
 @flow(log_prints=True)
 def etl_gcs_to_bq_parent(year: int, months: list[int], color : str):
-    """Main ETL flow"""
+    """Main ETL flow (GCS to BQ)"""
     num_processed_rows=0
     for month in months:
         num_processed_rows += etl_gcs_to_bq(year, month, color)
