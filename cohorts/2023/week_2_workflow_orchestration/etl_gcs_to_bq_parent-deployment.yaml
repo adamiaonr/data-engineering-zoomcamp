@@ -1,0 +1,54 @@
+###
+### A complete description of a Prefect Deployment for flow 'etl-gcs-to-bq-parent'
+###
+name: de-gcs-to-bq-deployment
+description: Main ETL flow
+version: 2e7e0c6cfecef0103ed09fbd1eab13ab
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-gcs-to-bq-parent
+manifest_path: null
+storage: null
+path: /Users/adamiaonr/workbench/data-engineering-zoomcamp/cohorts/2023/week_2_workflow_orchestration
+entrypoint: etl_gcs_to_bq.py:etl_gcs_to_bq_parent
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    year:
+      title: year
+      position: 0
+      type: integer
+    months:
+      title: months
+      position: 1
+      type: array
+      items:
+        type: integer
+    color:
+      title: color
+      position: 2
+      type: string
+  required:
+  - year
+  - months
+  - color
+  definitions: null
