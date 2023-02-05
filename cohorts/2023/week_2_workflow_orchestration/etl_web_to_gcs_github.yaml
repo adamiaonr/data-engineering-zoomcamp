@@ -10,12 +10,6 @@ tags: []
 parameters: {}
 schedule: null
 infra_overrides: {}
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: etl-web-to-gcs-parent
-manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -24,16 +18,20 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
-  _block_document_id: 7e17b153-199e-4632-a318-6fe59b3c7329
-  _block_document_name: anonymous-11f4316f-73c1-4ef1-9318-2b4a3225feed
-  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-web-to-gcs-parent
+manifest_path: null
 storage:
   repository: https://github.com/adamiaonr/data-engineering-zoomcamp.git
   reference: main
   access_token: '**********'
-  _block_document_id: fc2a9f11-1751-4ab9-a29e-ce5daaa9854b
+  include_git_objects: false
+  _block_document_id: 78aec4a2-9483-45a2-a38d-f2800d75aaf9
   _block_document_name: zoom-github
   _is_anonymous: false
   block_type_slug: github
