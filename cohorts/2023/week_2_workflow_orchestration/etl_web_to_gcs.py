@@ -64,6 +64,8 @@ def get_datetime_columns(color:str):
         datetime_columns = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
     elif color == "yellow":
         datetime_columns = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
+    elif color == "fhv":
+        datetime_columns = ['pickup_datetime', 'dropOff_datetime']
     else:
         raise ValueError(f"unknown taxi dataset color : {color}")
 
