@@ -3,13 +3,19 @@
 ###
 name: web to GCS deployment via Github
 description: Main ETL flow (web to GCS)
-version: 8fc89ae8756b798f69143127fde32a32
+version: 3f0064682258cab27db9dab65def021b
 # The work queue that will handle this deployment's runs
 work_queue_name: test
 tags: []
 parameters: {}
 schedule: null
 infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-web-to-gcs-parent
+manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -18,14 +24,11 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
+  _block_document_id: 70a41ea5-89a3-438b-b280-0019493e60a1
+  _block_document_name: anonymous-038345a9-4e9d-44c2-be2d-d0d49993cb1e
+  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: etl-web-to-gcs-parent
-manifest_path: null
 storage:
   repository: https://github.com/adamiaonr/data-engineering-zoomcamp.git
   reference: main
@@ -59,6 +62,11 @@ parameter_openapi_schema:
       title: color
       default: green
       position: 2
+      type: string
+    file_format:
+      title: file_format
+      default: parquet
+      position: 3
       type: string
   required: null
   definitions: null
