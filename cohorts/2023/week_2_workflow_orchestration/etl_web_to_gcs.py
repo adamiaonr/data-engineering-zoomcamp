@@ -1,6 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
 import pandas as pd
+import wget
 
 from prefect import flow, task
 from prefect.tasks import task_input_hash
@@ -72,28 +73,43 @@ def get_datetime_columns(color:str):
     return datetime_columns
 
 
+@task
+def download_file(url:str) -> Path:
+    """Downloads the file specified in url and returns path to downloaded file"""
+    return wget.download(url)
+
+
 @flow()
-def etl_web_to_gcs(year: int, month: int, color: str) -> None:
+def etl_web_to_gcs(year: int, month: int, color: str, file_format: str) -> None:
     """The main ETL function"""
     dataset_file = f"{color}_tripdata_{year}-{month:02}"
     dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_file}.csv.gz"
 
-    df = fetch(dataset_url, datetime_columns=get_datetime_columns(color))
-    df_clean = clean(df)
-    local_dir = create_local_dir(color)
-    path = write_local(df_clean, local_dir, dataset_file)
-    write_gcs(path)
+    if file_format == "raw":
+        path = download_file(dataset_url)
+        write_gcs(path)
+
+    elif file_format == "parquet":
+        df = fetch(dataset_url, datetime_columns=get_datetime_columns(color))
+        df_clean = clean(df)
+        local_dir = create_local_dir(color)
+        path = write_local(df_clean, local_dir, dataset_file)
+        write_gcs(path)
+
+    else:
+        raise ValueError(f"unknown file format : {file_format}")
 
 
 @flow()
 def etl_web_to_gcs_parent(
     year: int = 2020,
     months: list[int] = [1],
-    color: str = "green"
+    color: str = "green",
+    file_format: str = "parquet"
 ) -> None:
     """Main ETL flow (web to GCS)"""
     for month in months:
-        etl_web_to_gcs(year, month, color)
+        etl_web_to_gcs(year, month, color, file_format=file_format)
 
 
 if __name__ == "__main__":
