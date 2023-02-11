@@ -74,9 +74,9 @@ def get_datetime_columns(color:str):
 
 
 @task
-def download_file(url:str) -> Path:
+def download_file(url: str, local_dir: Path) -> Path:
     """Downloads the file specified in url and returns path to downloaded file"""
-    return wget.download(url)
+    return wget.download(url, out=local_dir)
 
 
 @flow()
@@ -85,20 +85,20 @@ def etl_web_to_gcs(year: int, month: int, color: str, file_format: str) -> None:
     dataset_file = f"{color}_tripdata_{year}-{month:02}"
     dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_file}.csv.gz"
 
+    local_dir = create_local_dir(color)
+
     if file_format == "raw":
-        path = download_file(dataset_url)
-        write_gcs(path)
+        path = download_file(dataset_url, local_dir)
 
     elif file_format == "parquet":
         df = fetch(dataset_url, datetime_columns=get_datetime_columns(color))
         df_clean = clean(df)
-        local_dir = create_local_dir(color)
         path = write_local(df_clean, local_dir, dataset_file)
-        write_gcs(path)
 
     else:
         raise ValueError(f"unknown file format : {file_format}")
 
+    write_gcs(path)
 
 @flow()
 def etl_web_to_gcs_parent(
