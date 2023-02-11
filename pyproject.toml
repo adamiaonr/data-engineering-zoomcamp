@@ -21,6 +21,7 @@ prefect-gcp = {version = "0.2.4", extras = ["cloud-storage"]}
 protobuf = "4.21.11"
 pyarrow = "10.0.1"
 pandas-gbq = "0.18.1"
+wget = "^3.2"
 
 
 [build-system]
