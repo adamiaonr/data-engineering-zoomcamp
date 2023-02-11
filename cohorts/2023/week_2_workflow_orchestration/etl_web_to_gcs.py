@@ -76,7 +76,7 @@ def get_datetime_columns(color:str):
 @task
 def download_file(url: str, local_dir: Path) -> Path:
     """Downloads the file specified in url and returns path to downloaded file"""
-    return wget.download(url, out=local_dir)
+    return wget.download(url, out=str(local_dir))
 
 
 @flow()
