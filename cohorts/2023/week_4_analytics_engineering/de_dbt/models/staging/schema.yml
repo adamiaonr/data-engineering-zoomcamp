@@ -1,0 +1,9 @@
+version: 2
+sources:
+  - name: staging
+    database: psychic-medley-376114
+    schema: trips_data_all
+
+    tables:
+      - name: green_trip_data
+      - name: yellow_trip_data
