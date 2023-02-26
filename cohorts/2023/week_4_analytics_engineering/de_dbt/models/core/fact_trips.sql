@@ -1,4 +1,4 @@
- {{ config(materialized='table') }}
+{{ config(materialized='table') }}
 
 with green_data as (
     select *, 
