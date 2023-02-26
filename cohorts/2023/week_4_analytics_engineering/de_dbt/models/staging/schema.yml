@@ -7,3 +7,4 @@ sources:
     tables:
       - name: green_trip_data
       - name: yellow_trip_data
+      - name: fhv_trip_data
