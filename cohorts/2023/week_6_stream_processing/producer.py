@@ -1,6 +1,8 @@
 import os
 import json
 import pandas as pd
+import threading
+import time
 
 from kafka import KafkaProducer
 from kafka.errors import KafkaTimeoutError
@@ -8,16 +10,18 @@ from pathlib import Path
 
 DATA_FHV=Path('data/fhv/fhv_tripdata_2019-01.csv.gz')
 DATA_GREEN=Path('data/green/green_tripdata_2019-01.csv.gz')
+TOPIC_GREEN="rides_green"
+TOPIC_FHV="rides_fhv"
 
 class Ride:
     def __init__(self, ride:dict) -> None:
-        # make keys uniform
-        ride = { k.lower().replace('lpep_','') : v for k,v in ride.items() }
-        # build object
-        self.pu_location_id = ride['pulocationid']
-        self.do_location_id = ride['dolocationid']
+        self.pu_location_id = int(ride['pulocationid'])
+        self.do_location_id = int(ride['dolocationid'])
         self.pu_datetime = ride['pickup_datetime']
         self.do_datetime = ride['dropoff_datetime']
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}: {self.__dict__}'
 
 class JsonProducer(KafkaProducer):
     def __init__(self, props:dict):
@@ -28,7 +32,9 @@ class JsonProducer(KafkaProducer):
         """
         Read rides .csv file, return a list of ride messages to be send
         """
-        return pd.read_csv(resource_path)\
+        records=pd.read_csv(resource_path)
+        records.columns=[c.lower().replace('lpep_','') for c in records.columns]
+        return records.dropna(subset=['pulocationid'])\
             .head(20)\
             .apply(lambda r : Ride(r.to_dict()), axis=1)\
             .to_list()
@@ -40,7 +46,8 @@ class JsonProducer(KafkaProducer):
         for ride in messages:
             try:
                 record = self.producer.send(topic=topic, key=ride.pu_location_id, value=ride)
-                print('Record {} successfully produced at offset {}'.format(ride.pu_location_id, record.get().offset))
+                print('Record {} successfully produced at offset {}.{}'.format(ride.pu_location_id, topic, record.get().offset))
+                time.sleep(1)
             except KafkaTimeoutError as e:
                 print(e.__str__())
 
@@ -58,12 +65,16 @@ if __name__ == "__main__":
     producer = JsonProducer(props=config)
 
     rides = {
-        'rides_fhv': producer.read_records(resource_path=DATA_FHV),
-        'rides_green': producer.read_records(resource_path=DATA_GREEN),
+        TOPIC_FHV: producer.read_records(resource_path=DATA_FHV),
+        TOPIC_GREEN: producer.read_records(resource_path=DATA_GREEN),
     }
 
-    # print(rides['rides_fhv'])
-    print(rides['rides_green'])
-
+    threads = []
     for topic in rides:
-        producer.publish_rides(topic=topic, messages=rides[topic])
+        thread = threading.Thread(target=producer.publish_rides, args=(topic, rides[topic],))
+        threads.append(thread)
+        thread.start()
+
+    for i, thread in enumerate(threads):
+        thread.join()
+        print(f'thread {i} finished')
