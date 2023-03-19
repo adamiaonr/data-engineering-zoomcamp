@@ -6,7 +6,7 @@
 * Instead of a local Kafka deployment, decided to use [Confluent Cloud](https://confluent.cloud/home)
 * My `consumer.py` is a bit 'dumb', as it prints the top 5 most popular location IDs by continuously updating a `pandas` dataframe. This should be done some other way (e.g., with `PySpark`, dataframes are updated automatically).
 
-![image](https://user-images.githubusercontent.com/5468601/226191633-f1d721cd-81b6-41f2-8e67-1dd63e91b5ac.png)
+<img width="797" alt="Screenshot 2023-03-19 at 16 47 35" src="https://user-images.githubusercontent.com/5468601/226191785-ded78c3b-6fed-4c3e-83cc-7774006957ca.png">
 
 ## Required setup
 
