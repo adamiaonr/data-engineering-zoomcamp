@@ -2,6 +2,12 @@
 
 ## Overview
 
+* Used Python
+* Instead of a local Kafka deployment, decided to use [Confluent Cloud](https://confluent.cloud/home)
+* My `consumer.py` is a bit 'dumb', as it prints the top 5 most popular location IDs by continuously updating a `pandas` dataframe. This should be done some other way (e.g., with `PySpark`, dataframes are updated automatically).
+
+![image](https://user-images.githubusercontent.com/5468601/226191633-f1d721cd-81b6-41f2-8e67-1dd63e91b5ac.png)
+
 ## Required setup
 
 1. Download the required `*.csv.gz` files into `data/fhv` and `data/green`
@@ -11,7 +17,7 @@ $ pip install --upgrade poetry
 $ cd <repository>
 $ poetry shell
 ```
-3. Start a cluster in [Confluent Cloud](https://confluent.cloud/home), add 3 topics: [`rides_green`, `rides_fhv`, `rides_all`].
+3. Start a cluster in Confluent Cloud, add 3 topics: [`rides_green`, `rides_fhv`, `rides_all`].
 4. Get an API key from Confluent Cloud for your cluster, add them to your environment:
 ```
 export CLUSTER_API_KEY="<key>"
