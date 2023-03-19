@@ -19,6 +19,10 @@ class Ride:
         self.do_location_id = int(ride['dolocationid'])
         self.pu_datetime = ride['pickup_datetime']
         self.do_datetime = ride['dropoff_datetime']
+        self.color = ""
+
+    def add_color(self, color:str) -> None:
+        self.color = color
 
     def __repr__(self):
         return f'{self.__class__.__name__}: {self.__dict__}'
@@ -32,11 +36,18 @@ class JsonProducer(KafkaProducer):
         """
         Read rides .csv file, return a list of ride messages to be send
         """
-        records=pd.read_csv(resource_path)
-        records.columns=[c.lower().replace('lpep_','') for c in records.columns]
-        return records.dropna(subset=['pulocationid'])\
-            .head(20)\
-            .apply(lambda r : Ride(r.to_dict()), axis=1)\
+        records = pd.read_csv(resource_path)
+        records.columns = [c.lower().replace('lpep_','') for c in records.columns]
+
+        return records.dropna(
+            subset=[
+                'pulocationid', 
+                'dolocationid', 
+                'pickup_datetime', 
+                'dropoff_datetime']
+            ) \
+            .head(300) \
+            .apply(lambda r : Ride(r.to_dict()), axis=1) \
             .to_list()
 
     def publish_rides(self, topic: str, messages: list[Ride]) -> None:
@@ -44,6 +55,7 @@ class JsonProducer(KafkaProducer):
         Publish rides to Kafka cluster
         """
         for ride in messages:
+            ride.add_color(topic.replace('rides_',''))
             try:
                 record = self.producer.send(topic=topic, key=ride.pu_location_id, value=ride)
                 print('Record {} successfully produced at offset {}.{}'.format(ride.pu_location_id, topic, record.get().offset))
