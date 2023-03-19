@@ -59,7 +59,7 @@ class JsonProducer(KafkaProducer):
             try:
                 record = self.producer.send(topic=topic, key=ride.pu_location_id, value=ride)
                 print('Record {} successfully produced at offset {}.{}'.format(ride.pu_location_id, topic, record.get().offset))
-                time.sleep(1)
+                time.sleep(5)
             except KafkaTimeoutError as e:
                 print(e.__str__())
 
